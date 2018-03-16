@@ -77,4 +77,9 @@ OPTIONS                                         *projectionist-ext-options*
 Add this to your `.vimrc` to activate the options extension: >
   autocmd User ProjectionistActivate  call projectionist#options#activate()
 <
+PROPERTIES                                      *projectionist-ext-props*
+
+Add this to your `.vimrc` to activate the properties extension: >
+  autocmd User ProjectionistActivate  call projectionist#properties#activate()
+<
  vim:tw=78:et:ft=help:norl:
