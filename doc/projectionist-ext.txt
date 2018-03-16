@@ -5,7 +5,7 @@ Repo:    https://github.com/WolfgangMehner/vim-projectionist-ext
 License: Same terms as Vim itself (see |license|)
 
 RULESETS                                        *projectionist-ext-rulesets*
-
+                                                *projectionist#rulesets#detect()*
 A ruleset is a set of projections loaded from a file stored in a central
 location, making it easily reusable. They can be imported from
 `.projections.json` files.
@@ -73,13 +73,115 @@ The ruleset imports another ruleset `.projectionist/general.json`:
   }
 <
 OPTIONS                                         *projectionist-ext-options*
+                                                *projectionist#options#activate()*
+This extension allows to specify options for files in projections.
 
 Add this to your `.vimrc` to activate the options extension: >
   autocmd User ProjectionistActivate  call projectionist#options#activate()
 <
+Options are set via the `setglobal` and `setlocal` properties:
+>
+  {
+    "doc/*support.txt": {
+      "setlocal" : {
+        "spell"     : 1,
+        "spelllang" : "en"
+      }
+    },
+    "*.vim" : {
+      "setlocal" : {
+        "expandtab"  : 1,
+        "shiftwidth" : 4,
+      }
+    },
+    "*.lua" : {
+      "setlocal" : {
+        "path^" : "{project}/modules",
+        "path+" : "{project}/modules-fallback"
+      }
+    }
+  }
+<
+Each `setglobal` and `setlocal` property is a dictionary, where the keys
+specifies the options and the operations. To set an option, use: >
+  "expandtab"  : 1
+  "expandtab=" : 1
+  "expandtab:" : 1
+To multiply, increase, or decrease a numeric value: >
+  "shiftwidth^=" : 2
+  "shiftwidth+=" : 2
+  "shiftwidth-=" : 2
+To prepend, append, or remove from a comma-separated list: >
+  "path^=" : "pa/th"
+  "path+=" : "pa/th"
+  "path-=" : "pa/th"
+To add or remove flags: >
+  "formatoptions+=" : 't'
+  "formatoptions-=" : 't'
+To set a local option to the global value: >
+  "expandtab<" : ""
+<
+Global options are applied first, then the local ones. Unlike the usual
+processing by Projectionist, options are applied from the outermost project
+root to the innermost one. This way, the most specific options for each file
+are applied last, and are thus the ones actually used.
+
+The options are sanitized and applied in sandbox mode. Therefore, 'filetype'
+and 'syntax' can not be set via this extension.
+
 PROPERTIES                                      *projectionist-ext-props*
+                                                *projectionist#properties#activate()*
+Properties can be added to project roots. Every time their value changes, or
+the user switches from one root containing the property to another, an
+autocommand is triggered.
 
 Add this to your `.vimrc` to activate the properties extension: >
   autocmd User ProjectionistActivate  call projectionist#properties#activate()
 <
+The usefulness is best explained with an example. Imagine a CMake plug-in
+which provides commands for setting the project root and the build location:
+>
+  CMakeProjectDir     $HOME/my/project
+  CMakeBuildLocation  $HOME/my/project/build
+  CMake -j3 install
+  CMake ...
+<
+However, imagine that this plug-in lacks awareness of different projects. This
+extension allows to easily automate switching between several project
+configurations. Add two properties `CMake::ProjectRoot` and `CMake::BuildLocation`
+to the projects projections:
+>
+	"*" : {
+		"properties" : {
+			"CMake::ProjectRoot" : {
+				"default" : "{project}"
+			},
+			"CMake::BuildLocation" : {
+				"default" : "{project}/build/"
+			},
+		}
+	}
+<
+                                                       *ProjectionistProperty*
+In the `.vimrc`, add an autocommand as a "callback" for changing the
+properties. Each time the value of a property changes, or you switch from one
+project root containing the property to another, the autocommand
+`ProjectionistProperty` is executed. The variable `g:projectionist_prop` is
+set to the name of the property, and `g:projectionist_value` to the new value.
+>
+  augroup MyProjections
+
+  autocmd User ProjectionistProperty
+        \ if g:projectionist_prop == 'CMake::ProjectRoot' |
+        \   exec 'CMakeProjectDir' g:projectionist_value |
+        \ elseif g:projectionist_prop == 'CMake::BuildLocation' |
+        \   exec 'CMakeBuildLocation' g:projectionist_value |
+        \ endif
+
+  augroup END
+<
+By making use of Projectionist's transformation (e.g. `{project}`, see above),
+the projections above can easily be reused in other projects. The paths are
+automatically inferred before executing |ProjectionistProperty|.
+
  vim:tw=78:et:ft=help:norl:

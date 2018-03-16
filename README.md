@@ -1,6 +1,6 @@
 # projectionist-ext.vim
 
-Extension for [Tim Pope](https://github.com/tpope)'s [Projectionist](https://github.com/tpope/vim-projectionist) plug-in.
+Extensions for [Tim Pope](https://github.com/tpope)'s [Projectionist](https://github.com/tpope/vim-projectionist) plug-in.
 
 See `doc/projectionist-ext.txt` for the full documentation.
 
