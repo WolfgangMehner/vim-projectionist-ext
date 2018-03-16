@@ -72,4 +72,9 @@ The ruleset imports another ruleset `.projectionist/general.json`:
     }
   }
 <
+OPTIONS                                         *projectionist-ext-options*
+
+Add this to your `.vimrc` to activate the options extension: >
+  autocmd User ProjectionistActivate  call projectionist#options#activate()
+<
  vim:tw=78:et:ft=help:norl:

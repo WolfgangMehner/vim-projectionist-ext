@@ -10,3 +10,7 @@ See `doc/projectionist-ext.txt` for the full documentation.
 
 Enables projectionist configuration files `.projections.json` to import further
 projections.
+
+## Options
+
+Specify options for files in projections.
