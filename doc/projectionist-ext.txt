@@ -1,0 +1,75 @@
+*projectionist-ext.txt* *projectionist-ext* Projectionist Extensions
+
+Author:  Wolfgang Mehner <wolfgang-mehner@web.de>
+Repo:    https://github.com/WolfgangMehner/vim-projectionist-ext
+License: Same terms as Vim itself (see |license|)
+
+RULESETS                                        *projectionist-ext-rulesets*
+
+A ruleset is a set of projections loaded from a file stored in a central
+location, making it easily reusable. They can be imported from
+`.projections.json` files.
+
+Add this to your `.vimrc` to activate the ruleset extension: >
+  autocmd User ProjectionistDetect  call projectionist#rulesets#detect()
+<
+The rules can be loaded from a `.projections.json` file:
+>
+  {
+    "*" : { "rulesets" : "vimplugin" }
+  }
+<
+The rules are searched for on the |runtimepath|. When importing the ruleset
+`vimplugin`, a file `<runtimepath>/.projectionist/vimplugin.json` will be
+loaded, e.g. `$HOME/.vim/.projectionist/vimplugin.json`.
+
+Rulesets also work nicely in conjunction with the |g:projectionist_heuristics|
+settings:
+>
+  let g:projectionist_heuristics = {}
+  let g:projectionist_heuristics[ 'doc/&plugin/' ] = {
+        \   "*" : { 'rulesets' : 'vimplugin' }
+        \ }
+<
+Now instead of hardcoded projections in the `.vimrc` file, the properties for
+Vim plug-ins can be edited and reloaded at runtime.
+
+Several rulesets can be loaded at once, either using a comma-separated list of
+names, or an actual JSON list:
+>
+    "*" : { "rulesets" : [ "cproject", "doxygen" ] },
+    "*" : { "rulesets" : "general,vimplugin"       }
+<
+A ruleset `vimplugin` is given as a JSON file `.projectionist/vimplugin.json`:
+>
+  {
+    "autoload/*.vim" : {
+      "type": "autoload"
+    },
+    "doc/*.txt" : {
+      "type": "docu"
+     }
+    },
+    "plugin/*.vim" : {
+      "type": "plugin"
+    },
+    "*" : {
+      "rulesets" : "general"
+    }
+  }
+<
+The ruleset imports another ruleset `.projectionist/general.json`:
+>
+  {
+    "TODO.txt" : {
+      "type": "todo"
+    },
+    "README.md" : {
+      "type": "readme"
+    },
+    ".projections.json" : {
+      "type": "projections"
+    }
+  }
+<
+ vim:tw=78:et:ft=help:norl:
