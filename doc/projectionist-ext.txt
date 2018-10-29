@@ -2,6 +2,7 @@
 
 Author:  Wolfgang Mehner <wolfgang-mehner@web.de>
 Repo:    https://github.com/WolfgangMehner/vim-projectionist-ext
+Date:    Oct 29 2018
 License: Same terms as Vim itself (see |license|)
 
 RULESETS                                        *projectionist-ext-rulesets*
@@ -186,4 +187,26 @@ By making use of Projectionist's transformation (e.g. `{project}`, see above),
 the projections above can easily be reused in other projects. The paths are
 automatically inferred before executing |ProjectionistProperty|.
 
+BOOKMARKS                                       *projectionist-ext-bookmarks*
+                                                *projectionist#bookmarks#activate()*
+Bookmarks can be used to quickly jump between projects.
+
+Add this to your `.vimrc` to activate the bookmark extension: >
+  autocmd User ProjectionistActivate call projectionist#bookmarks#activate()
+<
+A project should be bookmarked in the `.projections.json` file in its
+top-level directory:
+>
+  {
+    "*" : { "bookmark" : "projectionist-ext" }
+  }
+<                                                            *ProjectBookmark*
+Now you can jump to the project using its symbolic name "projectionist-ext": >
+  :ProjectBookmark projectionist-ext
+The `.projections.json` file containing the rule determines the project
+location. The command opens that location in the current window, unless a
+modifier is used: >
+  :above ProjectBookmark projectionist-ext
+  :tab ProjectBookmark projectionist-ext
+<
  vim:tw=78:et:ft=help:norl:

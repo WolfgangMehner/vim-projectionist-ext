@@ -19,3 +19,7 @@ Specify options for files in projections.
 
 Add properties to the project root. When entering a file stored below a
 different root with the same property, an autocommand is triggered.
+
+## Project Bookmarks
+
+Bookmark projects to quickly jump between them.
