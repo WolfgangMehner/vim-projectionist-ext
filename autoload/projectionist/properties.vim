@@ -50,10 +50,17 @@ function! projectionist#properties#activate ()
         endif
         " emit autocommand
         try
+          let g:projectionist_root  = rec_prop.last_root
           let g:projectionist_prop  = name
           let g:projectionist_value = rec_prop.current_value
           silent doautocmd User ProjectionistProperty
+        catch
+          echohl ErrorMsg
+          echomsg 'while activating property:' name 'loaded from' root ':'
+          echomsg v:exception
+          echohl None
         finally
+          unlet! g:projectionist_root
           unlet! g:projectionist_prop
           unlet! g:projectionist_value
         endtry

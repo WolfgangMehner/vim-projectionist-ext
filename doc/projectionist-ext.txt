@@ -168,6 +168,8 @@ properties. Each time the value of a property changes, or you switch from one
 project root containing the property to another, the autocommand
 `ProjectionistProperty` is executed. The variable `g:projectionist_prop` is
 set to the name of the property, and `g:projectionist_value` to the new value.
+The variable `g:projectionist_root` contains the path of the current root for
+which the property is defined.
 >
   augroup MyProjections
 
