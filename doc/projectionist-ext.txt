@@ -200,7 +200,7 @@ top-level directory:
   {
     "*" : { "bookmark" : "projectionist-ext" }
   }
-<                                                            *ProjectBookmark*
+<                                                           *:ProjectBookmark*
 Now you can jump to the project using its symbolic name "projectionist-ext": >
   :ProjectBookmark projectionist-ext
 The `.projections.json` file containing the rule determines the project

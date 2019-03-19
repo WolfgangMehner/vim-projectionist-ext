@@ -19,7 +19,7 @@ function! projectionist#bookmarks#activate ()
 endfunction    " ----------  end of function projectionist#bookmarks#activate  ----------
 
 function! s:GetBookmarkList ( ArgLead, CmdLine, CursorPos )
-	return filter( keys( g:PROJECTIONIST_BOOKMARKS ), 'v:val =~ "\\V\\<'.escape(a:ArgLead,'\').'\\w\\*"' )
+	return sort( filter( keys( g:PROJECTIONIST_BOOKMARKS ), 'v:val =~ "\\V\\<'.escape(a:ArgLead,'\').'\\w\\*"' ) )
 endfunction    " ----------  end of function s:GetBookmarkList  ----------
 
 function! s:OpenProject ( name, mods )
