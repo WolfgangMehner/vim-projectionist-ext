@@ -64,6 +64,10 @@ function! s:ListBookmark ()
   endfor
 endfunction    " ----------  end of function s:ListBookmark  ----------
 
-command! -nargs=* -complete=customlist,<SID>GetBookmarkList   ProjectBookmark     call <SID>OpenProject(<q-args>,'<mods>')
-command! -nargs=* -complete=customlist,<SID>GetBookmarkList   ProjectBookmarkRm   call <SID>RemoveBookmark(<q-args>)
+command! -nargs=1 -complete=customlist,<SID>GetBookmarkList   Eprojectbookmark    call <SID>OpenProject(<q-args>,'')
+command! -nargs=1 -complete=customlist,<SID>GetBookmarkList   Sprojectbookmark    call <SID>OpenProject(<q-args>,'<mods>'!='' ? '<mods>' : 'aboveleft' )
+command! -nargs=1 -complete=customlist,<SID>GetBookmarkList   Vprojectbookmark    call <SID>OpenProject(<q-args>,'vertical <mods>')
+command! -nargs=1 -complete=customlist,<SID>GetBookmarkList   Tprojectbookmark    call <SID>OpenProject(<q-args>,'tab')
+command! -nargs=1 -complete=customlist,<SID>GetBookmarkList   ProjectBookmark     call <SID>OpenProject(<q-args>,'<mods>')
+command! -nargs=1 -complete=customlist,<SID>GetBookmarkList   ProjectBookmarkRm   call <SID>RemoveBookmark(<q-args>)
 command! -nargs=0                                             ProjectBookmarkLs   call <SID>ListBookmark()
